@@ -6,9 +6,10 @@
 
 using namespace std;
 const int TOTAL_MOVE_CHOICES = 8;
-const char possibleMoves[8] = { 'A','B','C','D','E','F','G','H' };
+const char possibleMoves[8] = { 'A','B','C','D','E','F','G','H'};
 int NUM_ROWS;
 int NUM_COLS;
+int moveNumber;
 
 bool CheckMove(int** board, int row, int col, char move) {
 	switch (move) {
@@ -69,9 +70,9 @@ bool CheckMove(int** board, int row, int col, char move) {
 		}
 		return false;
 	}
-}
+} //PERFORM ANOTHER TEST ON ME
 
-void MakeMove(int** board, int rowPos, int colPos, char move, int& moveNumber) { //forge ahead
+void MakeMove(int** board, int rowPos, int colPos, char move) { //forge ahead
 	switch (move) {
 	case 'A':
 		rowPos -= 1;
@@ -116,7 +117,19 @@ void MakeMove(int** board, int rowPos, int colPos, char move, int& moveNumber) {
 	}
 } 
 
-
+void DrawBoard(int** board) { //FIX ME
+	for (int col = 0; col < NUM_COLS; col++) {
+		cout << "+--";
+	}
+	cout << "+" << endl;
+	for (int row = 0; row < NUM_ROWS; row++) {
+		for (int col = 0; col < NUM_COLS; col++) {
+			if (board[row][col] > 0) {
+				cout << " " << 
+			}
+		}
+	}
+}
 
 Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos) {
 	Queue<char>* queue = new Queue<char>;
@@ -132,15 +145,15 @@ void UndoMove(int** board, int i, int j, char move, int& moveNumber) {//backtrac
 
 }
 
-bool IsTourClosed(int** board, int startRow, int startCol, const int numRows, const int numCols) { //PlaceQueens analog
-	int moveNum = 0;
+bool IsTourClosed(int** board, int startRow, int startCol, const int numRows, const int numCols) { //PlaceQueens analog FIX ME
+	moveNumber = 1;
 	char move = '\0';
 	Stack<Queue<char>*> stack;
 	Queue<char>* queue = FindPossibleMoves(board, startRow, startCol);
 	move = queue->Front();
 	stack.Push(queue);
-	moveNum++;
-
+	MakeMove(board, startRow, startCol, move);
+	moveNumber++;
 
 
 } 
