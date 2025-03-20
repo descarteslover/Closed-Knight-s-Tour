@@ -8,10 +8,10 @@ const char possibleMoves[8] = { 'A','B','C','D','E','F','G','H' };
 int NUM_ROWS;
 int NUM_COLS;
 
-bool CheckMove(int** board, int row, int col, const int numRows, const int numCols, char move) {
+bool CheckMove(int** board, int row, int col, char move) {
 	switch (move) {
 	case 'A':
-		if (col + 2 < numCols && row - 1 >= 0) {
+		if (col + 2 < NUM_COLS && row - 1 >= 0) {
 			if (board[row - 1][col + 2] == 0) {
 				return true;
 			}
@@ -25,21 +25,21 @@ bool CheckMove(int** board, int row, int col, const int numRows, const int numCo
 		}
 			return false;
 	case 'C':
-		if (col - 2 >= 0 && row + 1 < numRows) {
+		if (col - 2 >= 0 && row + 1 < NUM_ROWS) {
 			if (board[row + 1][col - 2] == 0) {
 				return true;
 			}
 		}
 		return false;
 	case 'D': 
-		if (col + 1 < numCols && row + 2 < numRows) {
+		if (col + 1 < NUM_COLS && row + 2 < NUM_ROWS) {
 			if (board[row + 2][col + 1] == 0) {
 				return true;
 			}
 		}
 		return false;
 	case 'E':
-		if (col + 1 < numCols && row - 2 >= 0) {
+		if (col + 1 < NUM_COLS && row - 2 >= 0) {
 			if (board[row - 2][col + 1] == 0) {
 				return true;
 			}
@@ -53,14 +53,14 @@ bool CheckMove(int** board, int row, int col, const int numRows, const int numCo
 		}
 		return false;
 	case 'G':
-		if (col - 1 >= 0 && row + 2 < numRows) {
+		if (col - 1 >= 0 && row + 2 < NUM_ROWS) {
 			if (board[row + 1][col - 1] == 0) {
 				return true;
 			}
 		}
 		return false;
 	case 'H':
-		if (col + 2 < numCols && row + 1 < numRows) {
+		if (col + 2 < NUM_COLS && row + 1 < NUM_ROWS) {
 			if (board[row + 1][col + 2] == 0) {
 				return true;
 			}
@@ -115,10 +115,10 @@ void MakeMove(int** board, int rowPos, int colPos, char move, int& moveNumber) {
 	moveNumber++;
 }
 
-Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos, const int numRows, const int numCols) {
+Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos) {
 	Queue<char>* queue = new Queue<char>;
 	for (int i = 0; i < TOTAL_MOVE_CHOICES; i++) {
-		if (CheckMove(board, rowPos, colPos, numRows, numCols, possibleMoves[i])){
+		if (CheckMove(board, rowPos, colPos,possibleMoves[i])){
 			queue->Enqueue(possibleMoves[i]);
 		}
 	}
