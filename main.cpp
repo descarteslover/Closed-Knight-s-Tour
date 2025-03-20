@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "Queue.h"
 #include "Stack.h"
 
@@ -112,8 +114,9 @@ void MakeMove(int** board, int rowPos, int colPos, char move, int& moveNumber) {
 		board[rowPos][colPos] = moveNumber;
 		break;
 	}
-	moveNumber++;
-}
+} 
+
+
 
 Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos) {
 	Queue<char>* queue = new Queue<char>;
@@ -131,8 +134,14 @@ void UndoMove(int** board, int i, int j, char move, int& moveNumber) {//backtrac
 
 bool IsTourClosed(int** board, int startRow, int startCol, const int numRows, const int numCols) { //PlaceQueens analog
 	int moveNum = 0;
+	char move = '\0';
 	Stack<Queue<char>*> stack;
-	Queue<char>* queue = FindPossibleMoves(board, )
+	Queue<char>* queue = FindPossibleMoves(board, startRow, startCol);
+	move = queue->Front();
+	stack.Push(queue);
+	moveNum++;
+
+
 
 } 
 int main() {
@@ -147,11 +156,11 @@ int main() {
 	}
 	int i = 0;
 	int j = 0;
-	bool straightBoolin = CheckMove(matrix, i, j, numCols, numRows, 'H');
+	/*bool straightBoolin = CheckMove(matrix, i, j, 'H');
 	if (straightBoolin) {
 		cout << "This is how we win" << endl;
 	}
 	else {
 		cout << "This is how we lose" << endl;
-	}
+	}*/
 }
