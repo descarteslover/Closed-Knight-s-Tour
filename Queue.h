@@ -21,6 +21,7 @@ public:
     T Dequeue();
     T Front();
     bool IsEmpty();
+    void Print();
 
 private:
     Node<T>* queue;
@@ -89,4 +90,18 @@ T Queue<T>::Front()
     T item = queue->value;
 
     return item;
+}
+
+template<class T>
+void Queue<T>::Print(){
+    Node<T>* temp;
+    while (queue != nullptr) {
+        temp = queue;
+        T data = temp->value;
+        cout << data;
+        if (queue->next != nullptr) {cout << " --> "; }
+        queue = queue->next;
+        delete temp;
+    }
+    cout << endl;
 }

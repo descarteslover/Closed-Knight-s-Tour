@@ -6,10 +6,13 @@
 
 using namespace std;
 const int TOTAL_MOVE_CHOICES = 8;
-const char possibleMoves[8] = { 'A','B','C','D','E','F','G','H'};
+char possibleMoves[TOTAL_MOVE_CHOICES] = {'A','B','C','D','E','F','G','H'};
 int NUM_ROWS;
 int NUM_COLS;
+int startRow;
+int startCol;
 int moveNumber;
+int numHoles;
 
 bool CheckMove(int** board, int row, int col, char move) {
 	switch (move) {
@@ -72,7 +75,7 @@ bool CheckMove(int** board, int row, int col, char move) {
 	}
 } //PERFORM ANOTHER TEST ON ME
 
-void MakeMove(int** board, int rowPos, int colPos, char move) { //forge ahead
+void MakeMove(int** board, int& rowPos, int& colPos, char move) { //forge ahead
 	switch (move) {
 	case 'A':
 		rowPos -= 1;
@@ -117,35 +120,55 @@ void MakeMove(int** board, int rowPos, int colPos, char move) { //forge ahead
 	}
 } 
 
-void DrawBoard(int** board) { //FIX ME
+void DrawBoard(int** board) { //FIX ME //I THINK THIS IS FIXED
+	int maxSize = 2;
+	int size = 0;
 	for (int col = 0; col < NUM_COLS; col++) {
 		cout << "+--";
 	}
 	cout << "+" << endl;
 	for (int row = 0; row < NUM_ROWS; row++) {
 		for (int col = 0; col < NUM_COLS; col++) {
-			if (board[row][col] > 0) {
-				cout << " " << 
+			if (board[row][col] >= 0) {
+				size = to_string(board[row][col]).length();
+				if (size < maxSize) {
+					cout << "| " << board[row][col];
+				}
+				else {
+					cout << "|" << board[row][col];
+				}
+			}
+			else {
+				cout << "|XX";
 			}
 		}
+		cout << "|" << endl;
+		for (int col = 0; col < NUM_COLS; col++) {
+			cout << "+--";
+		}
+		cout << "+" << endl;
 	}
 }
 
-Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos) {
+Queue<char>* FindPossibleMoves(int** board, const int rowPos, const int colPos) { //COME BACK TO ME, ENSURE THE QUEUE IS BEING MADE CORRECTLY
 	Queue<char>* queue = new Queue<char>;
 	for (int i = 0; i < TOTAL_MOVE_CHOICES; i++) {
-		if (CheckMove(board, rowPos, colPos,possibleMoves[i])){
+		//cout << "Iteration " << i << endl;
+		//cout << possibleMoves[i] << endl;
+		//cout << rowPos << " " << colPos << endl;
+		if (CheckMove(board, rowPos, colPos, possibleMoves[i])){
 			queue->Enqueue(possibleMoves[i]);
+			//cout << "Entered if" << endl;
 		}
 	}
 	return queue;
 }
 
-void UndoMove(int** board, int i, int j, char move, int& moveNumber) {//backtracking //FIX ME COME BACK TO THIS
+void UndoMove(int** board, int& row, int& col, char move) {//backtracking //STILL NEEDS IMPLEMENTING BASICALLY REVERSING THE LOGIC OF MAKEMOVE
 
 }
 
-bool IsTourClosed(int** board, int startRow, int startCol, const int numRows, const int numCols) { //PlaceQueens analog FIX ME
+bool IsTourClosed(int** board, int startRow, int startCol) { //PlaceQueens analog FIX ME
 	moveNumber = 1;
 	char move = '\0';
 	Stack<Queue<char>*> stack;
@@ -154,21 +177,54 @@ bool IsTourClosed(int** board, int startRow, int startCol, const int numRows, co
 	stack.Push(queue);
 	MakeMove(board, startRow, startCol, move);
 	moveNumber++;
-
-
-} 
-int main() {
-	const int numCols = 3;
-	const int numRows = 3;
-	int** matrix = new int* [numRows];
-	for (int i = 0; i < numRows; i++) {
-		matrix[i] = new int[numCols];
-		for (int j = 0; j < numCols; j++) {
-			matrix[i][j] = 0;
+	while (!stack.IsEmpty()) { //as long as there are moves
+		queue = FindPossibleMoves(board, startRow, startCol);
+		if (queue->IsEmpty()) {
+			while (true) {
+				delete queue;
+				moveNumber;
+				queue = stack.Pop();
+				move = queue->Dequeue();
+				UndoMove(board, startRow, startCol, move);
+				cout << "Backtracking" << endl;
+				if (!queue->IsEmpty()) {
+					break; //More moves possible
+				}
+			}
 		}
 	}
-	int i = 0;
-	int j = 0;
+
+} 
+
+int** ReadFile() {
+	ifstream fin("input1.txt");
+	int row, col;
+	fin >> NUM_ROWS >> NUM_COLS;
+	fin >> startRow >> startCol;
+	int** board = new int* [NUM_ROWS];
+	for (int i = 0; i < NUM_ROWS; i++) {
+		board[i] = new int[NUM_COLS];
+		for (int j = 0; j < NUM_COLS; j++) {
+			board[i][j] = 0;
+		}
+	}
+	fin >> numHoles;
+	for (int i = 0; i < numHoles; i++) {
+		fin >> row >> col;
+		board[row][col] = -1;
+	}
+	return board;
+}
+int main() {
+	/*const int numCols = 3;
+	const int numRows = 3;*/
+	//matrix[1][1] = -1;
+	/*int i = 0;
+	int j = 0;*/
+	int** board = ReadFile();
+	/*DrawBoard(board);*/
+	bool straightBoolin = IsTourClosed(board, startRow, startCol);
+	/*queue->Print();*/
 	/*bool straightBoolin = CheckMove(matrix, i, j, 'H');
 	if (straightBoolin) {
 		cout << "This is how we win" << endl;
