@@ -94,14 +94,12 @@ T Queue<T>::Front()
 
 template<class T>
 void Queue<T>::Print(){
-    Node<T>* temp;
-    while (queue != nullptr) {
-        temp = queue;
+    Node<T>* temp = queue;
+    while (temp != nullptr) {
         T data = temp->value;
         cout << data;
-        if (queue->next != nullptr) {cout << " --> "; }
-        queue = queue->next;
-        delete temp;
+        if (temp->next != nullptr) {cout << " --> "; }
+        temp = temp->next;
     }
     cout << endl;
 }

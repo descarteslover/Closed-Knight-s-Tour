@@ -21,6 +21,9 @@
     <ClInclude Include="Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ArgumentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,6 +32,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="input1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="input2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="input3.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
